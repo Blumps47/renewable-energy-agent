@@ -1,0 +1,37 @@
+# FastAPI and Web Framework
+fastapi[standard]==0.115.6
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+
+# PydanticAI and AI Components
+pydantic-ai[openai]==0.0.14
+pydantic==2.10.3
+openai==1.57.2
+
+# Database and Vector Operations
+supabase==2.9.1
+asyncpg==0.30.0
+pgvector==0.3.6
+
+# Environment and Configuration
+python-dotenv==1.0.1
+pydantic-settings==2.6.1
+
+# Document Processing and Storage
+dropbox==12.0.2
+pypdf2==3.0.1
+python-docx==1.1.2
+openpyxl==3.1.5
+
+# Observability and Logging
+logfire==3.21.1
+structlog==24.4.0
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+httpx>=0.26,<0.28
+
+# CORS and Security
+python-jose[cryptography]==3.3.0
+fastapi-cors==0.0.6 

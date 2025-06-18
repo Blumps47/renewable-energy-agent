@@ -1,0 +1,30 @@
+# Development configuration for Renewable Energy AI Agent Ecosystem
+
+app:
+  name: "Renewable Energy AI Agents - Dev"
+  version: "0.1.0-dev"
+  debug: true
+  log_level: "DEBUG"
+
+ai:
+  model: "gpt-4o-mini"
+  max_tokens: 4000
+  timeout: 30
+  max_context_length: 8000
+
+rag:
+  chunk_size: 1000
+  chunk_overlap: 200
+  similarity_threshold: 0.7
+  max_retrieved_docs: 5
+
+database:
+  connection_pool_size: 5
+  query_timeout: 30
+
+# Development-specific settings
+development:
+  enable_debug_logging: true
+  mock_external_apis: false
+  test_data_enabled: true
+  auto_reload: true 
