@@ -1,5 +1,5 @@
 """
-FastAPI application for Renewable Energy Analyst Agent
+FastAPI application for Renewable Energy Analyst Agent with RAG System
 """
 
 import os
@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 
 from agent.renewable_agent import RenewableEnergyAgent
 from agent.models import MathResponse, ChatMessage, UserRegistration, AgentResponse
+from api_routes import router as rag_router
 from datetime import datetime
 
 
@@ -19,7 +20,7 @@ from datetime import datetime
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
     # Startup
-    print("🚀 Starting Renewable Energy Analyst API...")
+    print("🚀 Starting Renewable Energy Analyst API with RAG System...")
     yield
     # Shutdown
     print("🛑 Shutting down Renewable Energy Analyst API...")
@@ -27,9 +28,9 @@ async def lifespan(app: FastAPI):
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Renewable Energy Analyst Agent API",
-    description="A specialized AI agent for renewable energy analysis and mathematical operations",
-    version="1.0.0",
+    title="Renewable Energy Analyst Agent API with RAG",
+    description="A specialized AI agent for renewable energy analysis with document intelligence and RAG capabilities",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan
@@ -44,6 +45,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include RAG router
+app.include_router(rag_router)
+
 # Initialize the agent
 renewable_agent = RenewableEnergyAgent()
 
@@ -52,10 +56,18 @@ renewable_agent = RenewableEnergyAgent()
 async def root():
     """Root endpoint"""
     return {
-        "message": "Renewable Energy Analyst Agent API",
-        "version": "1.0.0",
+        "message": "Renewable Energy Analyst Agent API with RAG System",
+        "version": "2.0.0",
         "status": "active",
-        "documentation": "/docs"
+        "features": [
+            "AI Agent Chat",
+            "Document Intelligence",
+            "RAG System",
+            "Project Management",
+            "Multi-tenant Security"
+        ],
+        "documentation": "/docs",
+        "rag_endpoints": "/api/rag"
     }
 
 
@@ -65,8 +77,14 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "service": "renewable-energy-agent",
-        "version": "1.0.0"
+        "service": "renewable-energy-agent-rag",
+        "version": "2.0.0",
+        "features": {
+            "basic_agent": "active",
+            "rag_system": "active",
+            "document_processing": "active",
+            "project_management": "active"
+        }
     }
 
 

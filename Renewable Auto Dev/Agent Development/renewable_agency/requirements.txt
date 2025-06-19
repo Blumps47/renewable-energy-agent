@@ -1,37 +1,55 @@
-# FastAPI and Web Framework
-fastapi[standard]==0.115.6
-uvicorn[standard]==0.32.1
-python-multipart==0.0.12
-
-# PydanticAI and AI Components
-pydantic-ai[openai]==0.0.14
-pydantic==2.10.3
-openai==1.57.2
-
-# Database and Vector Operations
-supabase==2.9.1
-asyncpg==0.30.0
-pgvector==0.3.6
-
-# Environment and Configuration
-python-dotenv==1.0.1
-pydantic-settings==2.6.1
-
-# Document Processing and Storage
-dropbox==12.0.2
-pypdf2==3.0.1
-python-docx==1.1.2
-openpyxl==3.1.5
-
-# Observability and Logging
-logfire==3.21.1
-structlog==24.4.0
-
-# Testing
-pytest==8.3.4
-pytest-asyncio==0.24.0
-httpx>=0.26,<0.28
-
-# CORS and Security
+# Core FastAPI and web framework dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
 python-jose[cryptography]==3.3.0
-fastapi-cors==0.0.6 
+passlib[bcrypt]==1.7.4
+
+# AI and ML dependencies
+openai==1.3.5
+pydantic-ai==0.0.13
+pydantic==2.5.0
+tiktoken==0.5.2
+numpy==1.24.3
+
+# Document processing dependencies
+langchain==0.0.350
+langchain-text-splitters==0.0.1
+pypdf==3.17.1
+python-docx==1.1.0
+unstructured==0.11.6
+python-magic==0.4.27
+
+# Database and storage dependencies
+supabase==2.3.0
+psycopg2-binary==2.9.9
+pgvector==0.2.4
+
+# External service integrations
+dropbox==11.36.2
+google-api-python-client==2.108.0
+google-auth==2.23.4
+google-auth-oauthlib==1.1.0
+google-auth-httplib2==0.1.1
+
+# Utility dependencies
+python-dotenv==1.0.0
+logfire==0.20.0
+httpx==0.25.2
+aiofiles==23.2.1
+celery==5.3.4
+redis==5.0.1
+
+# Development and testing dependencies
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-mock==3.12.0
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Additional utilities
+python-dateutil==2.8.2
+pytz==2023.3
+requests==2.31.0
+urllib3==2.1.0 
