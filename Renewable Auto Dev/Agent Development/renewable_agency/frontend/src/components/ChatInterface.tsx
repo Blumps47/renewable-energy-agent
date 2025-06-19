@@ -72,6 +72,11 @@ export const ChatInterface: React.FC = () => {
   };
 
   const handleSendMessage = async (messageContent: string) => {
+    console.log('🚀 Starting message send...');
+    console.log('📝 Message:', messageContent);
+    console.log('👤 User:', user);
+    console.log('💬 Current Conversation:', currentConversation);
+    
     if (!user || !messageContent.trim()) return;
 
     try {
@@ -83,6 +88,7 @@ export const ChatInterface: React.FC = () => {
       if (!conversation) {
         conversation = createNewConversation();
         addConversation(conversation);
+        console.log('📁 Created new conversation:', conversation);
       }
 
       // Add user message
@@ -93,33 +99,53 @@ export const ChatInterface: React.FC = () => {
         timestamp: new Date(),
       };
       addMessage(userMessage);
+      console.log('📤 Added user message:', userMessage);
 
       // Send to API
-      const response = await apiService.sendMessage({
+      console.log('📡 Making API request with data:', {
         message: messageContent,
-        userId: user.id,
+        userId: user.user_id,
         conversationId: conversation.id,
       });
+      
+      const response = await apiService.sendMessage({
+        message: messageContent,
+        userId: user.user_id,
+        conversationId: conversation.id,
+      });
+
+      console.log('✅ API Response received:', response);
+      console.log('📊 Response structure:', JSON.stringify(response, null, 2));
+      console.log('🔍 Response.success:', response.success);
+      console.log('🔍 Response.data:', response.data);
 
       if (response.success && response.data) {
         // The backend returns: { response: "...", math_response: {...} }
         const responseData = response.data;
+        console.log('🔍 Parsing response data:', responseData);
+        console.log('🔍 responseData.response:', responseData.response);
+        console.log('🔍 responseData.math_response:', responseData.math_response);
+        
         let content = '';
         
         // Use the main response first
         if (responseData.response) {
           content = responseData.response;
+          console.log('✅ Using main response:', content);
         }
         // Fallback to math_response.renewable_context if main response is empty
         else if (responseData.math_response?.renewable_context && responseData.math_response.renewable_context !== 'N/A') {
           content = responseData.math_response.renewable_context;
+          console.log('✅ Using renewable_context:', content);
         }
         // Fallback to math_response.explanation
         else if (responseData.math_response?.explanation && responseData.math_response.explanation !== 'N/A') {
           content = responseData.math_response.explanation;
+          console.log('✅ Using explanation:', content);
         }
         else {
           content = 'I received your message but couldn\'t generate a proper response. Please try asking about renewable energy topics or math calculations.';
+          console.log('⚠️ Using fallback message:', content);
         }
         
         // Add calculation details if available from math_response
@@ -141,10 +167,16 @@ export const ChatInterface: React.FC = () => {
         };
         addMessage(assistantMessage);
       } else {
+        console.log('❌ Response not successful or no data');
+        console.log('❌ Response.success:', response.success);
+        console.log('❌ Response.error:', response.error);
+        console.log('❌ Full response:', response);
         throw new Error(response.error || 'Failed to get response');
       }
     } catch (error: any) {
-      console.error('Error sending message:', error);
+      console.error('🚨 Error sending message:', error);
+      console.error('🚨 Error stack:', error.stack);
+      console.error('🚨 Error message:', error.message);
       setError(error.message || 'Failed to send message');
       
       // Add error message
