@@ -47,10 +47,13 @@ export const ChatInterface: React.FC = () => {
 
   const checkConnection = async () => {
     try {
-      await apiService.healthCheck();
+      console.log('🔍 Checking API connection...');
+      const response = await apiService.healthCheck();
+      console.log('✅ API connection successful:', response);
       setIsConnected(true);
       clearError();
     } catch (error) {
+      console.error('❌ API connection failed:', error);
       setIsConnected(false);
       setError('Failed to connect to the server. Please check if the backend is running.');
     }
@@ -99,21 +102,29 @@ export const ChatInterface: React.FC = () => {
       });
 
       if (response.success && response.data) {
-        // Extract content from the MathResponse data
-        const mathData = response.data;
+        // The backend returns: { response: "...", math_response: {...} }
+        const responseData = response.data;
         let content = '';
         
-        // Build a comprehensive response from the math response data
-        if (mathData.renewable_context && mathData.renewable_context !== 'N/A') {
-          content = mathData.renewable_context;
-        } else if (mathData.explanation && mathData.explanation !== 'N/A') {
-          content = mathData.explanation;
-        } else {
+        // Use the main response first
+        if (responseData.response) {
+          content = responseData.response;
+        }
+        // Fallback to math_response.renewable_context if main response is empty
+        else if (responseData.math_response?.renewable_context && responseData.math_response.renewable_context !== 'N/A') {
+          content = responseData.math_response.renewable_context;
+        }
+        // Fallback to math_response.explanation
+        else if (responseData.math_response?.explanation && responseData.math_response.explanation !== 'N/A') {
+          content = responseData.math_response.explanation;
+        }
+        else {
           content = 'I received your message but couldn\'t generate a proper response. Please try asking about renewable energy topics or math calculations.';
         }
         
-        // Add calculation details if available
-        if (mathData.operation && mathData.operation !== 'N/A' && mathData.result !== undefined) {
+        // Add calculation details if available from math_response
+        const mathData = responseData.math_response;
+        if (mathData?.operation && mathData.operation !== 'N/A' && mathData.operation !== 'information' && mathData.result !== undefined) {
           content += `\n\nCalculation: ${mathData.operation} = ${mathData.result}`;
           if (mathData.units) {
             content += ` ${mathData.units}`;

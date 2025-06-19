@@ -325,9 +325,9 @@ async def sync_google_drive_folder(
 
 @router.post("/documents/upload", response_model=Dict[str, Any])
 async def upload_document(
+    background_tasks: BackgroundTasks,
     project_id: str = Form(...),
     file: UploadFile = File(...),
-    background_tasks: BackgroundTasks,
     current_user: str = Depends(get_current_user)
 ):
     """Upload a document file."""
